@@ -1,0 +1,78 @@
+{% extends 'monstercatalog/dash_base.html' %}
+
+{% block main %}
+    <div class="row">
+        <div class="col">
+            <div class="bg-secondary p-5 text-white">
+                <h1 class="display-4">{{ monster.name }}</h1>
+                <hr class="my-4">
+                <p>From <em class="px-1">{{ monster.book.title }}</em> by <strong class="px-1">{{ monster.book.author.name }}</strong></p>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col" style="max-width: 80em">
+            <div class="row px-4 py-4 gx-5">
+                <div class="col-lg-8">
+                    <h2>About</h2>
+                    <hr>
+                    <p style="max-width: 60em">{{ monster.description }}</p>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card bg-light">
+                        <div class="card-body">
+                            <table class="table table-borderless m-0 text-start w-100">
+                                <tbody>
+                                <tr>
+                                    <th scope="row">Name</th>
+                                    <td>{{ monster.name }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Age</th>
+                                    <td>
+                                        {% if monster.age < 0 %}
+                                            Unknown
+                                        {% else %}
+                                            {{ monster.age }}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Location</th>
+                                    <td>{{ monster.location }}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% for score in scores %}
+                <div class="row px-4 mb-3">
+                    <div class="col">
+                        <h2 class="d-inline">Thesis {{ score.thesis.id }}: {{ score.thesis.title }}</h2>
+                        <a href="{% url 'thesis_detail' score.thesis.id %}" class="pl-2 link-secondary">info</a>
+                        <hr class="mt-0">
+                        <div class="row">
+                            <div class="col-auto px-4 text-center border-end">
+                                <em class="border-bottom">Score</em> <br>
+                                <span class="fs-3">{{ score.score }}</span>
+                            </div>
+                            <div class="col px-4">
+                                <p style="max-width: 60em">
+                                    {% if score.description %}
+                                        {{ score.description }}
+                                    {% else %}
+                                        {% lorem %}
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'monstercatalog/dash_base.html' %}
+
+{% block main %}
+<div class="row">
+        <div class="col">
+            <div class="bg-secondary p-5 text-white">
+                <h1 class="display-4">Thesis {{ thesis.id }}: {{ thesis.title }}</h1>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col" style="max-width: 80em">
+            <div class="row px-4 py-4 gx-5">
+                <div class="col">
+                    <h2>Thesis Text</h2>
+                    <hr>
+                    <p style="max-width: 60em; white-space: pre-line">{{ thesis.description }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

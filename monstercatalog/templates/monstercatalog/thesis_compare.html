@@ -1,0 +1,90 @@
+{% extends 'monstercatalog/dash_base.html' %}
+
+{% block main %}
+    <div class="row p-4">
+        <div class="col px-5 mx-auto" style="max-width: 60em">
+            {% for thesis in theses %}
+                <div class="row mb-4">
+                    <div class="col-12 text-center">
+                        <h2>{{ thesis.title }}</h2>
+                        <hr>
+                    </div>
+                    <div class="col-auto mx-auto" id="chart-{{ thesis.id }}">
+
+                    </div>
+                    <div class="col-12">
+                        <p style="white-space: pre-line">
+                            {{ thesis.description }}
+                        </p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="https://d3js.org/d3.v5.js"></script>
+
+    {{ score_json|json_script:"score-data" }}
+
+    <script type="text/javascript">
+        const colors = ["#FF0000", "#FFA500", "#FFFF00", "#008000", "#0000FF", "#4b0082", "#ee82ee"];
+
+        let plotWidth = 500;
+        let plotHeight = 500;
+        let padding = 10;
+
+        let scores = JSON.parse(document.getElementById('score-data').textContent);
+
+        let xScale = d3.scaleLinear().domain([0, 10]).range([0, plotWidth])
+        let xAxis = d3.axisTop(xScale).ticks(10)
+
+        for (let i = 0; i < 7; i++) {
+            let base1 = i + 1
+            let svg = d3.select("#chart-" + base1)
+                .append("svg")
+                .attr("width", plotWidth + padding * 2)
+                .attr("height", plotHeight + padding * 2)
+
+            svg.append("g")
+                .attr("transform", "translate(" + padding + ",30)")
+                .call(xAxis)
+
+            svg.selectAll("circle")
+                .data(scores)
+                .enter()
+                .append("circle")
+                .attr("cx", function (d) {
+                    return xScale(d['scores'][i]);
+                })
+                .attr("cy", function (d) {
+                    return d['monster_id'] * 100;
+                })
+                .attr("r", 5)
+                .attr("fill", function (d) {
+                    return colors[d['monster_id'] - 1]
+                })
+
+            svg.selectAll("text")
+                .data(scores)
+                .enter()
+                .append("text")
+                .text(function (d) {
+                    return d['name']
+                })
+                .attr("x", function (d) {
+                    return d['scores'][i] * 50;
+                })
+                .attr("y", function (d) {
+                    return d['monster_id'] * 100;
+                })
+                .attr("font-family", "sans-serif")
+                .attr("font-size", "11px")
+                .attr("fill", "red");
+        }
+
+
+    </script>
+
+{% endblock %}
