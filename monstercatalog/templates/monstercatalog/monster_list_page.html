@@ -1,0 +1,40 @@
+{% extends 'monstercatalog/dash_base.html' %}
+
+{% block main %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-auto">
+                <div class="row my-4">
+                    <div class="col">
+                        <h1 class="border-bottom">Monsters</h1>
+                    </div>
+                </div>
+                {% for monster in monsters %}
+                    <div class="row my-3 border-bottom">
+                        <div style="width: 75px;">
+                            {% if monster.image %}
+                                <img src="{{ monster.image.url }}" width="100%">
+                            {% endif %}
+                        </div>
+                        <div class="col" style="max-width: 80rem">
+                            <div class="row align-items-baseline">
+                                <div class="col-auto">
+                                    <h2>{{ monster.name }}</h2>
+                                </div>
+                                <div class="col-auto">
+                                    <small>from <a href="{% url 'book_detail' monster.book.id %}" class="text-decoration-none link-dark"><em>{{ monster.book.title }}</em></a> by <a href="{% url 'author_detail' monster.book.author.id %}" class="text-decoration-none link-dark">{{ monster.book.author.name }}</a></small>
+                                </div>
+                                <div class="col-auto ms-auto">
+                                    <a href="{% url 'monster_detail' monster.id %}" class="text-decoration-none">Read More ></a>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <p class="text-truncate">{{ monster.description }}</p>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

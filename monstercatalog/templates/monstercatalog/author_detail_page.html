@@ -1,0 +1,58 @@
+{% extends 'monstercatalog/dash_base.html' %}
+
+{% load static %}
+
+{% block main %}
+    <div class="row">
+        <div class="col">
+            <div class="bg-secondary p-5 text-white">
+                <h1 class="display-4">{{ author.name }}</h1>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col" style="max-width: 80em">
+            <div class="row px-4 py-4 gx-5">
+                <div class="col-lg-8 col-md-6">
+                    <h2>About</h2>
+                    <hr>
+                    <p style="max-width: 60em">{{ author.about }}</p>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="card bg-light mx-auto" style="max-width: 18em">
+                        <div class="card-body">
+                            {% if author.image %}
+                            <img src="{{ author.image.url }}" alt="Image of {{ author.name }}">
+                            {% endif %}
+                            <table class="table table-borderless m-0 text-start w-100">
+                                <tbody>
+                                <tr>
+                                    <th scope="row">Name</th>
+                                    <td>{{ author.name }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Born</th>
+                                    <td>
+                                        {% firstof author.born "Unknown" %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Died</th>
+                                    <td>
+                                        {% firstof author.died "Unknown" %}
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% for book in books %}
+
+            {% endfor %}
+        </div>
+    </div>
+
+
+{% endblock %}

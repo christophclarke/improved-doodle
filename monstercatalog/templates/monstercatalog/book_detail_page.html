@@ -1,0 +1,56 @@
+{% extends 'monstercatalog/dash_base.html' %}
+
+{% load static %}
+
+{% block main %}
+    <div class="row">
+        <div class="col">
+            <div class="bg-secondary p-5 text-white">
+                <h1 class="display-4">{{ book.title }}</h1>
+                <hr class="my-4">
+                <p>by <strong class="px-1">{{ book.author.name }}</strong></p>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col" style="max-width: 80em">
+            <div class="row px-4 py-4 gx-5">
+                <div class="col-lg-8 col-md-6">
+                    <h2>About</h2>
+                    <hr>
+                    <p style="max-width: 60em">{{ book.about }}</p>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="card bg-light mx-auto" style="max-width: 18em">
+                        {% if book.image %}
+                            <img src="{{ book.image.url }}" alt="Image of {{ book.title }}">
+                        {% endif %}
+                        <div class="card-body">
+                            <table class="table table-borderless m-0 text-start w-100">
+                                <tbody>
+                                <tr>
+                                    <th scope="row">Title</th>
+                                    <td>{{ book.title }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Author</th>
+                                    <td>
+                                        <a href="{% url 'author_detail' book.author.id %}" class="text-decoration-none">
+                                            {{ book.author.name }}
+                                        </a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% for monster in monsters %}
+
+            {% endfor %}
+        </div>
+    </div>
+
+
+{% endblock %}

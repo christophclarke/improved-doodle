@@ -1,0 +1,32 @@
+{% extends 'monstercatalog/dash_base.html' %}
+
+{% block main %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-auto">
+                <div class="row my-4">
+                    <div class="col">
+                        <h1 class="border-bottom">Theses</h1>
+                    </div>
+                </div>
+                {% for thesis in theses %}
+                    <div class="row my-3 border-bottom">
+                        <div class="col" style="max-width: 80rem">
+                            <div class="row align-items-baseline">
+                                <div class="col-auto">
+                                    <h2>Thesis {{ thesis.id }}: {{ thesis.title }}</h2>
+                                </div>
+                                <div class="col-auto ms-auto">
+                                    <a href="{% url 'thesis_detail' thesis.id %}" class="text-decoration-none">Read More ></a>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <p class="text-truncate">{{ thesis.description }}</p>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

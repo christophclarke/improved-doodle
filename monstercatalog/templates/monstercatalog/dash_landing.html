@@ -1,0 +1,94 @@
+{% extends 'monstercatalog/dash_base.html' %}
+
+{% block main %}
+    <div class="container-fluid ps-0">
+        <div class="row">
+            <div class="col">
+                <div class="bg-secondary p-5 text-white">
+                    <h1 class="display-4">The Monster Catalog</h1>
+                    <hr class="my-4">
+                    <p>By Christopher Clarke for ENGL 2823</p>
+                </div>
+            </div>
+        </div>
+        <div class="row p-4">
+            <div class="col">
+                <h2 class="border-bottom">Monsters</h2>
+                <div class="row flex-nowrap" style="overflow-x: scroll; overflow-y: hidden">
+                    {% for monster in monsters %}
+                        <div class="col me-3">
+                            <div class="card shadow h-100 " style="width: 16rem;">
+                                {% if monster.image %}
+                                    <img src="{{ monster.image.url }}" style="object-fit: cover" class="card-img-top h-100">
+                                {% endif %}
+                                <div class="mt-auto card-img-overlay" style="background-color: rgba(255, 255, 255, .8)">
+                                    <h2 class="card-title">{{ monster.name }}</h2>
+                                    <a href="{% url 'monster_detail' monster.id %}" class="stretched-link" style="color: rgba(0,0,0,0)">Learn More</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="row p-4">
+            <div class="col">
+                <h2 class="border-bottom">Books</h2>
+                <div class="row flex-nowrap" style="overflow-x: scroll; overflow-y: hidden">
+                    {% for book in books %}
+                        <div class="col me-3">
+                            <div class="card shadow h-100 " style="width: 16rem;">
+                                {% if book.image %}
+                                    <img src="{{ book.image.url }}" style="object-fit: cover" class="card-img-top h-100">
+                                {% endif %}
+                                <div class="mt-auto card-img-overlay" style="background-color: rgba(255, 255, 255, .8)">
+                                    <h2 class="card-title">{{ book.title }}</h2>
+                                    <p class="card-text">{{ book.author.name }}</p>
+                                    <a href="{% url 'book_detail' book.id %}" class="stretched-link" style="color: rgba(0,0,0,0)">Learn More</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="row p-4">
+            <div class="col">
+                <h2 class="border-bottom">Authors</h2>
+                <div class="row flex-nowrap" style="overflow-x: scroll; overflow-y: hidden">
+                    {% for author in authors %}
+                        <div class="col me-3">
+                            <div class="card shadow h-100 " style="width: 16rem;">
+                                {% if author.image %}
+                                    <img src="{{ author.image.url }}" style="object-fit: cover" class="card-img-top h-100">
+                                {% endif %}
+                                <div class="mt-auto card-img-overlay" style="background-color: rgba(255, 255, 255, .8)">
+                                    <h2 class="card-title">{{ author.name }}</h2>
+                                    <a href="{% url 'author_detail' author.id %}" class="stretched-link" style="color: rgba(0,0,0,0)">Learn More</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="row p-4 mb-5">
+            <div class="col">
+                <h2 class="border-bottom">Cohen's 7 Theses</h2>
+                <div class="row flex-nowrap" style="overflow-x: scroll; overflow-y: hidden">
+                    {% for thesis in theses %}
+                        <div class="col me-3">
+                            <div class="card shadow h-100 " style="width: 16rem; height: 325px;">
+                                <img src="https://via.placeholder.com/325" style="object-fit: cover" class="card-img-top h-100">
+                                <div class="mt-auto card-img-overlay bg-white">
+                                    <h2 class="card-title">{{ thesis.title }}</h2>
+                                    <a href="{% url 'thesis_detail' thesis.id %}" class="stretched-link" style="color: rgba(0,0,0,0)">Learn More</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,24 +1,33 @@
 {% extends 'monstercatalog/dash_base.html' %}
 
-{% block main %}
-    <div class="row p-4">
-        <div class="col px-5 mx-auto" style="max-width: 60em">
-            {% for thesis in theses %}
-                <div class="row mb-4">
-                    <div class="col-12 text-center">
-                        <h2>{{ thesis.title }}</h2>
-                        <hr>
-                    </div>
-                    <div class="col-auto mx-auto" id="chart-{{ thesis.id }}">
+{#{% block custom_style %}#}
+{#    <style>#}
+{##}
+{#    </style>#}
+{#{% endblock %}#}
 
+{% block main %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                {% for thesis in theses %}
+                    <div class="row mb-4">
+                        <div class="col-12 text-center">
+                            <h2>{{ thesis.title }}</h2>
+                            <hr>
+                        </div>
+                        <div class="col-auto mx-auto">
+                            <div class="row" id="chart-{{ thesis.id }}"></div>
+                            <div class="row pt-3" id="legend-{{ thesis.id }}"></div>
+                        </div>
+                        <div class="col" style="min-width: 24rem; max-width: 60rem">
+                            <p style="white-space: pre-line">
+                                {{ thesis.description }}
+                            </p>
+                        </div>
                     </div>
-                    <div class="col-12">
-                        <p style="white-space: pre-line">
-                            {{ thesis.description }}
-                        </p>
-                    </div>
-                </div>
-            {% endfor %}
+                {% endfor %}
+            </div>
         </div>
     </div>
 {% endblock %}
@@ -29,10 +38,19 @@
     {{ score_json|json_script:"score-data" }}
 
     <script type="text/javascript">
-        const colors = ["#FF0000", "#FFA500", "#FFFF00", "#008000", "#0000FF", "#4b0082", "#ee82ee"];
+        const colors = [
+            "#FF0000",
+            "#FFA500",
+            "#FFFF00",
+            "#008000",
+            "#0000FF",
+            "#4b0082",
+            "#ee82ee",
+            "#FF00FF"
+        ];
 
         let plotWidth = 500;
-        let plotHeight = 500;
+        let plotHeight = 200;
         let padding = 10;
 
         let scores = JSON.parse(document.getElementById('score-data').textContent);
@@ -40,30 +58,53 @@
         let xScale = d3.scaleLinear().domain([0, 10]).range([0, plotWidth])
         let xAxis = d3.axisTop(xScale).ticks(10)
 
+        let yScale = d3.scaleLinear().domain([0, 9]).range([0, plotHeight])
+
+        function add_legend_node(id, name, color) {
+            let col = d3.select("#legend-" + id).append("div").attr("class", "col")
+            col.append("div").attr("style", `background-color: ${color}; height: 15px; width: 15px;`).attr("class", "mx-auto")
+            col.append("p").text(name).attr("style", "font-size: 11px; text-align: center;")
+        }
+
         for (let i = 0; i < 7; i++) {
             let base1 = i + 1
             let svg = d3.select("#chart-" + base1)
                 .append("svg")
                 .attr("width", plotWidth + padding * 2)
                 .attr("height", plotHeight + padding * 2)
+                .attr("class", "overflow-scroll")
 
             svg.append("g")
-                .attr("transform", "translate(" + padding + ",30)")
+                .attr("transform", `translate(${padding},30)`)
                 .call(xAxis)
+
+            svg.append("g")
+                .attr("transform", `translate(${padding},30)`)
+                .attr("class", "grid")
+                .call(d3.axisTop().tickFormat("").tickSize(-plotHeight).scale(xScale))
 
             svg.selectAll("circle")
                 .data(scores)
                 .enter()
                 .append("circle")
                 .attr("cx", function (d) {
-                    return xScale(d['scores'][i]);
+                    return xScale(d['scores'][i]) + padding;
                 })
                 .attr("cy", function (d) {
-                    return d['monster_id'] * 100;
+                    return yScale(d['monster_id']) + 30;
                 })
                 .attr("r", 5)
                 .attr("fill", function (d) {
                     return colors[d['monster_id'] - 1]
+                })
+                .attr("stroke", "black")
+                .attr("data-bs-toggle", "popover")
+                .attr("title", function (d) {
+                    return d['name']
+                })
+                .attr("data-bs-html", true)
+                .attr("data-bs-content", function (d) {
+                    return d['scores'][i] + " / 10" + "<br><a href='/monster/" + d['monster_id'] + "'>read about this score ></a>"
                 })
 
             svg.selectAll("text")
@@ -74,15 +115,28 @@
                     return d['name']
                 })
                 .attr("x", function (d) {
-                    return d['scores'][i] * 50;
+                    return xScale(d['scores'][i]);
                 })
                 .attr("y", function (d) {
-                    return d['monster_id'] * 100;
+                    return yScale(d['monster_id']);
                 })
                 .attr("font-family", "sans-serif")
                 .attr("font-size", "11px")
                 .attr("fill", "red");
+
+            for (let j = 0; j < scores.length; j++) {
+                let id = scores[j]['monster_id'] - 1
+                add_legend_node(base1, scores[j]['name'], colors[id])
+            }
+
         }
+
+        var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+        var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+            return new bootstrap.Popover(popoverTriggerEl)
+        })
+
+        console.log(popoverList)
 
 
     </script>

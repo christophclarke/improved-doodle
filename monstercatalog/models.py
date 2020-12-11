@@ -8,6 +8,7 @@ class Author(models.Model):
     born = models.DateField(null=True, blank=True)
     died = models.DateField(null=True, blank=True)
     about = models.TextField(blank=True)
+    image = models.ImageField(null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -17,6 +18,7 @@ class Book(models.Model):
     title = models.CharField(max_length=255)
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
     about = models.TextField(blank=True)
+    image = models.ImageField(null=True, blank=True)
 
     def __str__(self):
         return self.title
@@ -32,6 +34,7 @@ class MonsterThesis(models.Model):
 
 class Monster(models.Model):
     name = models.CharField(max_length=255)
+    image = models.ImageField(null=True, blank=True)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     description = models.TextField(blank=True)
     age = models.IntegerField(null=True, blank=True)

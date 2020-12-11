@@ -1,5 +1,7 @@
 {% extends 'monstercatalog/dash_base.html' %}
 
+{% load static %}
+
 {% block main %}
     <div class="row">
         <div class="col">
@@ -13,13 +15,16 @@
     <div class="row">
         <div class="col" style="max-width: 80em">
             <div class="row px-4 py-4 gx-5">
-                <div class="col-lg-8">
+                <div class="col-lg-8 col-md-6">
                     <h2>About</h2>
                     <hr>
                     <p style="max-width: 60em">{{ monster.description }}</p>
                 </div>
-                <div class="col-lg-4">
-                    <div class="card bg-light">
+                <div class="col-lg-4 col-md-6">
+                    <div class="card bg-light mx-auto" style="max-width: 18em">
+                        {% if monster.image %}
+                        <img src="{{ monster.image.url }}" alt="Image of {{ monster.name }}">
+                        {% endif %}
                         <div class="card-body">
                             <table class="table table-borderless m-0 text-start w-100">
                                 <tbody>
@@ -66,6 +71,16 @@
                                         {% lorem %}
                                     {% endif %}
                                 </p>
+                                {% if score.quote %}
+                                    <figure class="text-end p-3 border-end border-3">
+                                        <blockquote class="blockquote">
+                                            <p>{{ score.quote }}</p>
+                                        </blockquote>
+                                        <figcaption class="blockquote-footer">
+                                            <cite title="{{ score.monster.book.title }}">{{ score.monster.book.title }}</cite>
+                                        </figcaption>
+                                    </figure>
+                                {% endif %}
                             </div>
                         </div>
                     </div>

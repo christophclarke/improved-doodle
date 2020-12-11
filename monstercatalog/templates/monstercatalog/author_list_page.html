@@ -1,0 +1,35 @@
+{% extends 'monstercatalog/dash_base.html' %}
+
+{% block main %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-auto">
+                <div class="row my-4">
+                    <div class="col">
+                        <h1 class="border-bottom">Authors</h1>
+                    </div>
+                </div>
+                {% for author in authors %}
+                    <div class="row my-3 border-bottom">
+                        <div class="col" style="max-width: 80rem">
+                            <div class="row align-items-baseline">
+                                <div class="col-auto">
+                                    <h2>{{ author.name }}</h2>
+                                </div>
+                                <div class="col">
+                                    <small>{%  firstof author.born "Unknown" %} - {% firstof author.died "Unknown" %}</small>
+                                </div>
+                                <div class="col-auto ms-auto">
+                                    <a href="{% url 'author_detail' author.id %}" class="text-decoration-none">Read More ></a>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <p class="text-truncate">{{ author.about }}</p>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
