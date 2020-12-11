@@ -20,10 +20,10 @@
                 </div>
                 <div class="col-lg-4 col-md-6">
                     <div class="card bg-light mx-auto" style="max-width: 18em">
-                        <div class="card-body">
-                            {% if author.image %}
+                        {% if author.image %}
                             <img src="{{ author.image.url }}" alt="Image of {{ author.name }}">
-                            {% endif %}
+                        {% endif %}
+                        <div class="card-body">
                             <table class="table table-borderless m-0 text-start w-100">
                                 <tbody>
                                 <tr>
